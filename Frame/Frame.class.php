@@ -21,13 +21,13 @@ class Frame
     }
     private static function initDispatchParam()
     {
-        $default_platform = 'PUSH';
+        $default_platform = 'admin';
         $platform = isset($_GET['p']) ? $_GET['p'] : $default_platform;
         define('PLATFORM', $platform);
-        $default_controller = 'Push';
+        $default_controller = 'admin';
         $controller = isset($_GET['c']) ? $_GET['c'] : $default_controller;
         define('CONTROLLER', $controller);
-        $default_action = 'pushEarthquake';
+        $default_action = 'login';
         $action = isset($_GET['a']) ? $_GET['a'] : $default_action;
         define('ACTION', $action);
     }
@@ -36,6 +36,7 @@ class Frame
         define('PLATFORM_DIR', ROOT_DIR . PLATFORM . '/');
         define('M_DIR', PLATFORM_DIR . 'M/');
         define('C_DIR', PLATFORM_DIR . 'C/');
+        define('V_DIR', PLATFORM_DIR . 'V/');
     }
     private static function initAutoLoad()
     {
@@ -46,6 +47,7 @@ class Frame
                 'Tool' => Frame_DIR . 'Tool.class.php',
                 'Curl' => Frame_DIR . 'Curl.class.php',
                 'DAO' => Frame_DIR . 'DAO.class.php',
+                'Controller' => Frame_DIR . 'Controller.class.php',
             ];
             if (isset($FrameClassList[$calssName])) {
                 require_once $FrameClassList[$calssName];
