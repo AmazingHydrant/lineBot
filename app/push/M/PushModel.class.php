@@ -1,7 +1,12 @@
 <?php
 class PushModel
 {
-    public function pushMessage($userList, LINE\LINEBot\MessageBuilder $messageBuilder)
+    /**
+     * push message and add log
+     * @param array $userList to
+     * @param LINE\LINEBot\MessageBuilder $userList $messageBuilder
+     */
+    public function pushMessage($userList, $messageBuilder)
     {
         $channelToken = json_decode(file_get_contents(PLATFORM_DIR . 'token'), true)['channelToken'];
         $httpClient = new LINE\LINEBot\HTTPClient\CurlHTTPClient($channelToken);

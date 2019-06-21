@@ -1,4 +1,7 @@
 <?php
+/**
+ * 
+ */
 class Curl
 {
     public function __construct()
@@ -32,6 +35,10 @@ class Curl
         // echo $res;
         return $res;
     }
+    /**
+     * @param string $html html
+     * @param string $xpath xpath query
+     */
     public function xpath($html, $xpath)
     {
         // create document object model

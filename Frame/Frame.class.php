@@ -17,7 +17,9 @@ class Frame
     private static function initConst()
     {
         define('ROOT_DIR', getcwd() . '/');
-        define('Frame_DIR', ROOT_DIR . 'Frame/');
+        define('APP_DIR', ROOT_DIR . 'app/');
+        define('Frame_DIR', ROOT_DIR . 'frame/');
+        define('PUBLIC_DIR', '/public/');
     }
     private static function initDispatchParam()
     {
@@ -33,10 +35,13 @@ class Frame
     }
     private static function initPlatformConst()
     {
-        define('PLATFORM_DIR', ROOT_DIR . PLATFORM . '/');
+        define('PLATFORM_DIR', APP_DIR . PLATFORM . '/');
         define('M_DIR', PLATFORM_DIR . 'M/');
         define('C_DIR', PLATFORM_DIR . 'C/');
         define('V_DIR', PLATFORM_DIR . 'V/');
+        define('CSS_DIR', PUBLIC_DIR . PLATFORM . '/css/');
+        define('JS_DIR', PUBLIC_DIR  . PLATFORM . '/js/');
+        define('ICON_DIR', PUBLIC_DIR  . PLATFORM . '/icon/');
     }
     private static function initAutoLoad()
     {
@@ -47,6 +52,7 @@ class Frame
                 'Tool' => Frame_DIR . 'Tool.class.php',
                 'Curl' => Frame_DIR . 'Curl.class.php',
                 'DAO' => Frame_DIR . 'DAO.class.php',
+                'PDODB' => Frame_DIR . 'PDODB.class.php',
                 'Controller' => Frame_DIR . 'Controller.class.php',
             ];
             if (isset($FrameClassList[$calssName])) {
@@ -70,6 +76,7 @@ class Frame
     }
     private static function initDispatch()
     {
+
         $controller = CONTROLLER . 'Controller';
         $c = new $controller;
         if (method_exists($c, ACTION)) {
@@ -79,6 +86,7 @@ class Frame
         //if action not exists
         else {
             header('Location: ' . $_SERVER['PHP_SELF']);
+            die;
         }
     }
 }

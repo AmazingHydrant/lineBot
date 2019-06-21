@@ -10,6 +10,9 @@ class LogModel
     {
         define('LOG_ROOT', ROOT_DIR . 'log/');
     }
+    /**
+     * @param string $logName init log file
+     */
     private function initFile($logName)
     {
         if (!is_dir(LOG_ROOT)) {
@@ -36,6 +39,11 @@ class LogModel
     //         }
     //     }
     // }
+
+    /**
+     * @param string $logName log file name
+     * @param string $text text
+     */
     public function putLog($logName, $text)
     {
         $this->initFile($logName);

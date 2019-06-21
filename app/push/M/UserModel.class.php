@@ -20,9 +20,9 @@ class UserModel
     public function getUserIdList()
     {
         $usersID = json_decode(file_get_contents(USER_DB_PATH), true);
+        $userIdList = [];
         if (count($usersID) === 0) {
             echo 'No user info.';
-            die;
         } else {
             foreach ($usersID as $key => $val) {
                 if (isset($val['del']) == 1) {
@@ -51,6 +51,9 @@ class UserModel
             $this->addUserId($userID);
         }
     }
+    /**
+     * @param string $userID
+     */
     public function deleteUserId($userID)
     {
         $userInfo = json_decode(file_get_contents(USER_DB_PATH), true);
@@ -61,6 +64,9 @@ class UserModel
         $userInfo[$userID] = ['del' => '1'];
         file_put_contents(USER_DB_PATH, json_encode($userInfo, JSON_FORCE_OBJECT));
     }
+    /**
+     * @param array $userIDs
+     */
     public function deleteUserIds($userIDs)
     {
         foreach ($userIDs as $userID) {
