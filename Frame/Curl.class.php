@@ -27,12 +27,11 @@ class Curl
         //curl_setopt($ch,CURLOPT_HTTPHEADER,array('application/x-www-form-urlencoded;charset=utf-8','Content-length: '.strlen($data)));
         //curl_setopt($ch, CURLOPT_USERAGENT, "user-agent:Mozilla/5.0 (Windows NT 5.1; rv:24.0) Gecko/20100101 Firefox/24.0"); //解决错误：“未将对象引用设置到对象的实例。”
         $res = curl_exec($ch);
-        curl_close($ch);
         if (!$res) {
             file_put_contents(ROOT_DIR . "/log/curlErrLog.txt", date('Y-m-d H:i:s') . ' curl error: ' . curl_error($ch) . PHP_EOL, FILE_APPEND);
             return false;
         }
-        // echo $res;
+        curl_close($ch);
         return $res;
     }
     /**

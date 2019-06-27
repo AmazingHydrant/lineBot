@@ -6,6 +6,8 @@ class ManagerController extends Controller
      */
     public function index()
     {
+        $stockM = new StockModel;
+        self::$var['info'] = $stockM->getStockInfo();
         $this->display('index.php');
     }
 }

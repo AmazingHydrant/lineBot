@@ -22,10 +22,13 @@
                     <button class="btn btn-sm btn-primary btn-block my-3 w-25" type="submit">登入</button>
                     <p class="my-5 text-muted">&copy; 2019-2019</p>
                 </form>
-                <script src="<?php echo JS_DIR ?>bootstrap.min.js"> </script>
             </div>
         </div>
     </div>
+    <script defer src="https://use.fontawesome.com/releases/v5.9.0/js/all.js" integrity="sha384-7Gk1S6elg570RSJJxILsRiq8o0CO99g1zjfOISrqjFUCjxHDn3TmaWoWOqt6eswF" crossorigin="anonymous"></script>
+    <script src="<?php echo JS_DIR ?>jquery-3.3.1.slim.min.js"> </script>
+    <script src="<?php echo JS_DIR ?>popper.min.js"> </script>
+    <script src="<?php echo JS_DIR ?>bootstrap.min.js"> </script>
 </body>
 
 </html>

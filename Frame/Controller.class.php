@@ -5,6 +5,10 @@
 class Controller
 {
     /**
+     * @var array $var for pass var to view
+     */
+    protected static $var;
+    /**
      * display html
      * @param string $view html file name
      */
