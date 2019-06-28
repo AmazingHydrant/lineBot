@@ -11,17 +11,27 @@
 <body>
     <div class="container my-5 py-5">
         <div class="row justify-content-center align-items-center">
-            <div class="col-4 text-center">
-                <form class="form-signin" action="/index.php?p=admin&c=Admin&a=check" method="POST">
-                    <img class="mb-4" src="<?php echo ICON_DIR ?>/icon.png" alt="" width="72" height="72">
-                    <h1 class="h3 mb-3 font-weight-normal">LineBot管理系統</h1>
-                    <label for="inputUsername" class="sr-only">Username</label>
-                    <input type="text" id="inputUsername" class="form-control" placeholder="Username" name="user" required>
-                    <label for="inputPassword" class="sr-only">Password</label>
-                    <input type="password" id="inputPassword" class="form-control" placeholder="Password" name="pass" required>
-                    <button class="btn btn-sm btn-primary btn-block my-3 w-25" type="submit">登入</button>
-                    <p class="my-5 text-muted">&copy; 2019-2019</p>
-                </form>
+            <div class="col-lg-4 col-md-8 text-center">
+                <div class="card">
+                    <div class="card-header">
+                        <h1 class="h3 font-weight-normal">LineBot管理系統</h1>
+                    </div>
+                    <div class="card-body mb-5 pt-0">
+                        <img class="mb-3" src="<?php echo ICON_DIR ?>/icon.png" alt="" width="72" height="72">
+                        <form class="form-login" action="/index.php?p=admin&c=Admin&a=check" method="POST">
+                            <div class="form-group">
+                                <label for="inputUsername" class="sr-only">Username</label>
+                                <input type="text" id="inputUsername" class="form-control" placeholder="Username" name="user" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="inputPassword" class="sr-only">Password</label>
+                                <input type="password" id="inputPassword" class="form-control" placeholder="Password" name="pass" required>
+                            </div>
+                            <button class="btn btn-sm btn-primary" type="submit">登入</button>
+                        </form>
+                    </div>
+                    <p class="text-muted small">&copy; 2019-2019</p>
+                </div>
             </div>
         </div>
     </div>
