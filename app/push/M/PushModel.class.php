@@ -1,5 +1,5 @@
 <?php
-class PushModel
+class PushModel extends LineBotModel
 {
     /**
      * push message and add log
@@ -8,10 +8,7 @@ class PushModel
      */
     public function pushMessage($userList, $messageBuilder)
     {
-        $channelToken = json_decode(file_get_contents(PLATFORM_DIR . 'token'), true)['channelToken'];
-        $httpClient = new LINE\LINEBot\HTTPClient\CurlHTTPClient($channelToken);
-        $channelSecret = json_decode(file_get_contents(PLATFORM_DIR . 'token'), true)['channelSecret'];
-        $lineBot = new LINE\LINEBot($httpClient, array('channelSecret' => $channelSecret));
+        $lineBot = $this->lineBot;
         $log_M = new LogModel;
         foreach ($userList as $to) {
             $response = $lineBot->pushMessage($to, $messageBuilder);

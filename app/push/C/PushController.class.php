@@ -8,18 +8,18 @@ class PushController extends Controller
     /**
      * @param UserModel $userM
      */
-    protected $userM;
-    protected $to;
+    private $userM;
+    private $to;
     /**
      * @param PushModel $pushM
      */
-    protected $pushM;
+    private $pushM;
     /**
      * not used yet for push time
      */
-    protected $pushTimeHour = 15;
-    protected $pushTimeMinute = 0;
-    protected $pushTimeLimit = 5;
+    private $pushTimeHour = 15;
+    private $pushTimeMinute = 0;
+    private $pushTimeLimit = 5;
     public function __construct()
     {
         $this->initModel();
@@ -27,7 +27,7 @@ class PushController extends Controller
     /**
      * init UserModel & PushModle
      */
-    protected function initModel()
+    private function initModel()
     {
         $this->userM = new UserModel;
         $this->to = $this->userM->getUserIdList();
@@ -57,19 +57,20 @@ class PushController extends Controller
         $res = $stockM->getStockInfo();
         $remindHour = 10;
         $debitHour = 22;
+        $pushDelay = 6;
         foreach ($res as $v) {
-            if ($stockM->stockDateDiff($v['開始日期'], $remindHour) >= -5 && $stockM->stockDateDiff($v['開始日期'], $remindHour) < 0) {
+            if ($stockM->stockDateDiff($v['開始日期'], $remindHour) >= -1 * $pushDelay && $stockM->stockDateDiff($v['開始日期'], $remindHour) < 0) {
                 $text = "[抽股票]{$v['股票代號股票名稱']}" . PHP_EOL . "今天開始 {$v['開始日期']}" . PHP_EOL;
                 $text .= "參考價格 {$v['參考價格']}元" . PHP_EOL . "申購價格 {$v['申購價格']}元" . PHP_EOL;
                 $text .= "抽中獲利 {$v['抽中獲利']}元" . PHP_EOL . "獲利率 {$v['獲利率']}";
                 $textMessage = new LINE\LINEBot\MessageBuilder\TextMessageBuilder($text);
                 $this->pushM->pushMessage($this->to, $textMessage);
-            } elseif ($stockM->stockDateDiff($v['截止日期'], $remindHour) >= -5 && $stockM->stockDateDiff($v['截止日期'], $remindHour) < 0) {
+            } elseif ($stockM->stockDateDiff($v['截止日期'], $remindHour) >= -1 * $pushDelay && $stockM->stockDateDiff($v['截止日期'], $remindHour) < 0) {
                 $text = "[抽股票]{$v['股票代號股票名稱']}" . PHP_EOL . "今天截止 {$v['截止日期']}" . PHP_EOL;
                 $text .= "抽中獲利 {$v['抽中獲利']}元" . PHP_EOL . "中籤率 {$v['中籤率']}" . PHP_EOL . "期望值 " . ((int) str_replace(",", "", $v['抽中獲利']) * (float) $v['中籤率'] / 100) . "元";
                 $textMessage = new LINE\LINEBot\MessageBuilder\TextMessageBuilder($text);
                 $this->pushM->pushMessage($this->to, $textMessage);
-            } elseif ($stockM->stockDateDiff($v['預扣款日'], $debitHour, "-1 day") >= -5 && $stockM->stockDateDiff($v['預扣款日'], $debitHour, "-1 day") < 0) {
+            } elseif ($stockM->stockDateDiff($v['預扣款日'], $debitHour, "-1 day") >= -1 * $pushDelay && $stockM->stockDateDiff($v['預扣款日'], $debitHour, "-1 day") < 0) {
                 $text = "[抽股票]{$v['股票代號股票名稱']}" . PHP_EOL . "今晚預扣款 {$v['預扣款日']}" . PHP_EOL;
                 $text .= "預扣費用 {$v['預扣費用']}元";
                 $textMessage = new LINE\LINEBot\MessageBuilder\TextMessageBuilder($text);
