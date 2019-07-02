@@ -37,12 +37,12 @@ class StockModel
      */
     public function timeDiff($date, $strtotime = "+0 second")
     {
-        $hour = is_integer($date['hour']) ? $date['hour'] : (int)date("H");
-        $minute = is_integer($date['minute']) ? $date['minute'] : (int)date("i");
-        $second = is_integer($date['second']) ? $date['second'] : (int)date("s");
-        $month = is_integer($date['month']) ? $date['month'] : (int)date("n");
-        $day = is_integer($date['day']) ? $date['day'] : (int)date("j");
-        $year = is_integer($date['year']) ? $date['year'] : (int)date("Y");
+        $hour = is_integer($date['hour']) ? $date['hour'] : (int) date("H");
+        $minute = is_integer($date['minute']) ? $date['minute'] : (int) date("i");
+        $second = is_integer($date['second']) ? $date['second'] : (int) date("s");
+        $month = is_integer($date['month']) ? $date['month'] : (int) date("n");
+        $day = is_integer($date['day']) ? $date['day'] : (int) date("j");
+        $year = is_integer($date['year']) ? $date['year'] : (int) date("Y");
         if ($setTime = mktime($hour, $minute, $second, $month, $day, $year)) {
             if ($setTime = strtotime(" $strtotime", $setTime)) {
                 $diffTime = $setTime - time();
@@ -57,7 +57,7 @@ class StockModel
      * @param string $strtotime like +1 day | -2 hour etc..
      * @return int|bool minute
      */
-    public function stockDateDiff($date, $hour, $strtotime = "-0 second")
+    public function stockDateDiff($date, $hour, $strtotime = "-30 second")
     {
         $arrayDate = date_parse_from_format('n月j日', $date);
         $arrayDate['hour'] =  $hour;
