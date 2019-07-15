@@ -7,6 +7,7 @@ class Frame
         self::initConst();
         self::initDispatchParam();
         self::initPlatformConst();
+        self::initBaseFunction();
         self::initAutoLoad();
         self::initDispatch();
     }
@@ -42,6 +43,10 @@ class Frame
         define('CSS_DIR', PUBLIC_DIR . PLATFORM . '/css/');
         define('JS_DIR', PUBLIC_DIR  . PLATFORM . '/js/');
         define('ICON_DIR', PUBLIC_DIR  . PLATFORM . '/icon/');
+    }
+    private static function initBaseFunction()
+    {
+        require_once Frame_DIR . 'Function.php';
     }
     private static function initAutoLoad()
     {

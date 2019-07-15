@@ -1,12 +1,21 @@
 <?php
+
 /**
  * 
  */
 class Curl
 {
-    public function __construct()
+    private $res = NULL;
+    private $url = NULL;
+    public function __construct($url)
     {
         $this->init();
+        if ($url) {
+            if ($this->url != ($url)) {
+                $this->res = $this->getHtml($url);
+            }
+            return $this;
+        }
     }
     private function init()
     {
@@ -44,6 +53,21 @@ class Curl
         $dom = new DOMDocument();
         // load html into document object model
         @$dom->loadHTML('<?xml encoding="UTF-8">' . $html);
+        // create domxpath instance
+        $domXPath = new DOMXPath($dom);
+        // get all elements with a particular id and then loop through and print the href attribute
+        $elements = $domXPath->query($xpath);
+        return $elements;
+    }
+    public function xp($xpath)
+    {
+        // create document object model
+        $dom = new DOMDocument();
+        // load html into document object model
+        if (is_null($this->res)) {
+            dd('請使用curl("url")實例化對象後使用');
+        }
+        @$dom->loadHTML('<?xml encoding="UTF-8">' . $this->res);
         // create domxpath instance
         $domXPath = new DOMXPath($dom);
         // get all elements with a particular id and then loop through and print the href attribute

@@ -31,8 +31,11 @@ class PushController extends Controller
      */
     public function test()
     {
-        $str = "4.67%";
-        $toint =  (float) $str;
-        var_dump($toint);
+        $str = '';
+        foreach (PriceM()->getPrice('USB', 3) as $v) {
+            $str .= trim($v['titel']) . " $" . trim($v['price']) . "\r\n";
+        }
+        $str = trim($str, "\r\n");
+        p($str);
     }
 }
