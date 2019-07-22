@@ -49,3 +49,11 @@ function F($obj, $param = null)
     }
     return $objList[$obj];
 }
+function M($modelName)
+{
+    return F($modelName . 'Model');
+}
+function tt($data)
+{
+    $this->logM->putLog("tt.txt", $data);
+}

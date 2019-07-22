@@ -7,7 +7,7 @@ class Curl
 {
     private $res = NULL;
     private $url = NULL;
-    public function __construct($url)
+    public function __construct($url = null)
     {
         $this->init();
         if ($url) {

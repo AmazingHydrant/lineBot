@@ -24,7 +24,8 @@ class PushController extends Controller
             die('缺少t參數');
         }
         $textMessage = new LINE\LINEBot\MessageBuilder\TextMessageBuilder($text);
-        $this->pushM->pushMessage($this->to, $textMessage);
+        $pushM = new PushModel;
+        $pushM->pushMessage('all', $textMessage);
     }
     /**
      * for test

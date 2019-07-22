@@ -2,22 +2,32 @@
 class ReplyModel extends LineBotModel
 {
     /**
+     * @var LogModel $logM
+     */
+    private $logM;
+    /**
      * @var LINE\LINEBot\Event\BaseEvent[] array $baseEvent
      */
     private $baseEvent;
     /**
-     * @var LINE\LINEBot\Event\MessageEvent\TextMessage $textMessageEvent
+     * @var string $body Request body.
      */
-    private $textMessageEvent;
-    /**
-     * @var LogModel $logM
-     */
-    private $logM;
+    private $body;
+
+    static public $test = false;
+
     public function __construct()
     {
         parent::__construct();
+        $this->initLogModel();
         $this->initBaseEvent();
-        $this->initTextMessageEvent();
+    }
+    /**
+     * initLogModel
+     */
+    private function initLogModel()
+    {
+        $this->logM = new LogModel;
     }
     /**
      * initbaseEvent
@@ -26,35 +36,23 @@ class ReplyModel extends LineBotModel
     {
         $httpHeader = new LINE\LINEBot\Constant\HTTPHeader;
         $signature = $_SERVER['HTTP_' . $httpHeader::LINE_SIGNATURE];
-        $body = file_get_contents('php://input');
+        $this->body = file_get_contents('php://input');
         //for test
-        if (0) {
-            $body = '{"events":[{"type":"message","replyToken":"49261eab816e4d7c8a4645505de75100","source":{"userId":"U9a18b6f2e16d64b41f6783e454e3b425","type":"user"},"timestamp":1561988232348,"message":{"type":"text","id":"10138128552568","text":"測試"}}],"destination":"U5ea8112fb95806b31b7b189136953810"}';
-            $signature = '4qpcTeH5WUE5c6YBgPupixbwGUwf/BH5iNjRXZHCipc=';
+        if (self::$test) {
+            $fp = file(LOG_ROOT . 'Event.txt');
+            $this->body = explode(' ', $fp[count($fp) - 2])[2];
+            $this->body = str_replace(PHP_EOL, '', $this->body);
+            $signature = explode(' ', $fp[count($fp) - 1])[2];
+            $signature = str_replace(PHP_EOL, '', $signature);
         }
+        //for test end
         try {
-            $this->logM = new LogModel;
-            $this->baseEvent = $this->lineBot->parseEventRequest($body, $signature);
+            $this->baseEvent = $this->parseEventRequest($this->body, $signature);
+            M('User')->findNewUser($this->getUserId());
+            $this->logM->putLog("Event.txt", $this->body);
+            $this->logM->putLog("Event.txt", $signature);
         } catch (Exception $e) {
-            $this->logM->putLog("ReplyEvent.txt", $e);
-        }
-    }
-    /**
-     * initTextMessageEvent
-     */
-    private function initTextMessageEvent()
-    {
-        foreach ($this->baseEvent as $event) {
-            $tempEvent = [];
-            if ($event instanceof LINE\LINEBot\Event\MessageEvent\TextMessage) {
-                $tempEvent['userId'] = $event->getUserId();
-                $tempEvent['replyToken'] = $event->getReplyToken();
-                $tempEvent['timestamp'] = $event->getTimestamp();
-                $tempEvent['text'] = $event->getText();
-                $jsonEvent = json_encode($tempEvent, JSON_UNESCAPED_UNICODE);
-                $this->textMessageEvent[] = $tempEvent;
-                $this->logM->putLog("textEvent.txt", "$jsonEvent");
-            }
+            $this->logM->putLog("exceptionEvent.txt", $e);
         }
     }
     /**
@@ -62,52 +60,32 @@ class ReplyModel extends LineBotModel
      */
     public function getUserId()
     {
-        return $this->baseEvent->getUserId();
+        return $this->baseEvent[0]->getUserId();
     }
     /**
      * @return string|null
      */
     public function getReplyToken()
     {
-        return $this->baseEvent->getReplyToken();
+        return $this->baseEvent[0]->getReplyToken();
     }
     /**
      * @return string|null
      */
     public function getText()
     {
-        return $this->baseEvent->getText();
-    }
-    /**
-     * get textMessageEvent
-     */
-    public function getTextMessageEvent()
-    {
-        return $this->textMessageEvent;
+        return $this->baseEvent[0]->getText();
     }
     /**
      * reply text
      */
-    public function reply($replyToken, $text, $extraTexts = null)
+    public function reply($text)
     {
-        $response = $this->lineBot->replyText($replyToken, $text, $extraTexts);
+        $response = $this->replyText($this->baseEvent[0]->getReplyToken(), $text);
         if ($response->isSucceeded()) {
-            $this->logM->putLog('ReplyMessage.txt', "{$text} {\"ReplyToken\":\"{$replyToken}\"}");
+            $this->logM->putLog('ReplyMessage.txt', "{\"text\":\"{$text}\", \"userId\":\"{$this->baseEvent[0]->getUserId()}\", \"replyToken\":\"{$this->baseEvent[0]->getReplyToken()}\"}");
         } else {
-            $this->logM->putLog('ReplyMessage.txt', "[傳送失敗:{$response->getHTTPStatus()}] {$text} {\"ReplyToken\":\"{$replyToken}\"}");
-        }
-    }
-    /**
-     * @param string $userText
-     * @param string $replyText
-     */
-    public function replyText($userText, $replyText)
-    {
-        $textMessageEvent = $this->getTextMessageEvent();
-        foreach ($textMessageEvent as $text) {
-            if ($text['text'] == $userText) {
-                $this->reply($text['replyToken'], $replyText);
-            }
+            $this->logM->putLog('ReplyMessage.txt', "[傳送失敗:{$response->getHTTPStatus()}] {$response->getRawBody()}");
         }
     }
     /**
@@ -115,8 +93,14 @@ class ReplyModel extends LineBotModel
      */
     public function test()
     {
-        foreach ($this->textMessageEvent as $event) {
-            echo "userId:{$event['userId']} text:{$event['text']} replyToken:{$event['replyToken']}";
+        if (count($this->baseEvent) == 1) {
+            $this->replyText($this->baseEvent[0]->getReplyToken(), count($this->baseEvent));
+        } else {
+            foreach ($this->baseEvent as $event) {
+                if ($event->getText()) {
+                    $this->replyText($event->getReplyToken(), count($this->baseEvent));
+                }
+            }
         }
     }
 }
