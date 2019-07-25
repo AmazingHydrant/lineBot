@@ -1,0 +1,30 @@
+@startuml Test
+interface IReminder{
+    +getData()
+}
+interface IMessage{
+    +when()
+    +text()
+}
+class PushTestModel{
+    +push()
+}
+IReminder <|.. StockTestModel
+IReminder <|.. WeatherTestModel
+IReminder <|.. RainTestModel
+
+IMessage <|.. A_MessageModel
+IMessage <|.. B_MessageModel
+
+A_MessageModel --o StockTestModel
+B_MessageModel --o WeatherTestModel
+B_MessageModel --o RainTestModel
+
+IReminder <-- PushTestModel
+
+PushTestModel <.. TestController
+StockTestModel <.. TestController
+WeatherTestModel <.. TestController
+RainTestModel <.. TestController
+
+@enduml

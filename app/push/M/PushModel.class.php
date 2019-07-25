@@ -84,7 +84,11 @@ class PushModel extends LineBotModel
                 $this->pushMessage($to, $textMessage);
             } elseif ($stockM->stockDateDiff($v['截止日期'], $remindHour) >= -1 * $pushDelay && $stockM->stockDateDiff($v['截止日期'], $remindHour) < 0) {
                 $text = "[抽股票]{$v['股票代號股票名稱']}" . PHP_EOL . "今天截止 {$v['截止日期']}" . PHP_EOL;
-                $text .= "抽中獲利 {$v['抽中獲利']}元" . PHP_EOL . "中籤率 {$v['中籤率']}" . PHP_EOL . "期望值 " . ((int) str_replace(",", "", $v['抽中獲利']) * (float) $v['中籤率'] / 100) . "元";
+                if ($v['中籤率'] == '') {
+                    $text .= "抽中獲利 {$v['抽中獲利']}元" . PHP_EOL . "中籤率 尚未公佈";
+                } else {
+                    $text .= "抽中獲利 {$v['抽中獲利']}元" . PHP_EOL . "中籤率 {$v['中籤率']}" . PHP_EOL . "期望值 " . ((int) str_replace(",", "", $v['抽中獲利']) * (float) $v['中籤率'] / 100) . "元";
+                }
                 $textMessage = new LINE\LINEBot\MessageBuilder\TextMessageBuilder($text);
                 $this->pushMessage($to, $textMessage);
             } elseif ($stockM->stockDateDiff($v['預扣款日'], $debitHour, "-1 day") >= -1 * $pushDelay && $stockM->stockDateDiff($v['預扣款日'], $debitHour, "-1 day") < 0) {

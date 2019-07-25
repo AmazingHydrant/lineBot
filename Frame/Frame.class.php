@@ -73,6 +73,8 @@ class Frame
                 require_once M_DIR . $calssName . '.class.php';
             } elseif (mb_substr($calssName, 0, 4) == 'LINE') {
                 require_once ROOT_DIR . mb_substr($calssName, 5) . '.php';
+            } elseif (mb_substr($calssName, 0, 1) == 'I') {
+                require_once M_DIR . $calssName . '.php';
             } else {
                 echo 'unknow class name ';
             }
