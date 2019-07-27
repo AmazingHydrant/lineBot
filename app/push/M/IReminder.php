@@ -3,7 +3,7 @@
 interface IReminder
 {
     /**
-     * @return IMessage
+     * @return IReminder\IMessage
      */
     public function getData();
 }

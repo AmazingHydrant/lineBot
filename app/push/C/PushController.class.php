@@ -1,5 +1,8 @@
 <?php
 
+use IReminder\StockReminder;
+use IReminder\EarthquakeReminder;
+
 /**
  * push line message class
  */
@@ -10,9 +13,11 @@ class PushController extends Controller
      */
     public function push()
     {
-        $pushM = new PushModel;
-        $pushM->pushEarthquake();
-        $pushM->pushStock();
+        $pushTM = new PushTestModel;
+        $stockReminder = new StockReminder;
+        $pushTM->PushReminder($stockReminder);
+        $weatherReminder = new EarthquakeReminder;
+        $pushTM->PushReminder($weatherReminder);
     }
     /**
      * use HTTPget Method param "t" to send message 

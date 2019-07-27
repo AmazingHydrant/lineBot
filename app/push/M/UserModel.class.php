@@ -69,6 +69,25 @@ class UserModel
         }
         return $userIdList;
     }
+
+    public function getReminderUserIdList($remineName)
+    {
+        $userIdList = [];
+        if (count($this->usersInfo) === 0) {
+            echo 'No user info.';
+            return false;
+        } else {
+            foreach ($this->usersInfo as $key => $val) {
+                if (isset($val['remine'][$remineName]) and $val['remine'][$remineName]) {
+                    $userIdList[] = $key;
+                } else {
+                    continue;
+                }
+            }
+        }
+        return $userIdList;
+    }
+
     /**
      * @param string $userID
      */

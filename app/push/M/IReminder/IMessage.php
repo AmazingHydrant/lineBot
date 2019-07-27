@@ -11,5 +11,5 @@ interface IMessage
     /**
      * @return array
      */
-    public  function text();
+    public  function getText();
 }

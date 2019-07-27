@@ -1,19 +1,27 @@
 <?php
 
+// use IReminder\IMessage;
+use LINE\LINEBot\MessageBuilder\TextMessageBuilder;
+use LINE\LINEBot\MessageBuilder\ImageMessageBuilder;
+
 class PushTestModel
 {
-    public function Push(IReminder $data)
+    public function PushReminder(IReminder $reminder)
     {
-        /**
-         * @var IReminder $messages
-         */
-        $messages = $data->getData();
+        $userList = $reminder->getPushList();
+        $messages = $reminder->getData();
         foreach ($messages as $message) {
-            echo '<br/>';
-            p($message->nowPush());
-            echo '<br/>';
-            p($message->text());
-            echo '<hr/>';
+            if ($message->nowPush()) {
+                $textMessage = new TextMessageBuilder($message->getText());
+                $pushM = new PushModel;
+                $pushM->pushMessage($userList, $textMessage);
+                $imageMessage = new ImageMessageBuilder($message->getImgUrl(), $message->getImgUrl());
+                $pushM->pushMessage($userList, $imageMessage);
+                $message->setFlag();
+                p($userList);
+                echo $message->getText();
+                echo $message->getImgUrl();
+            }
         }
     }
 }
