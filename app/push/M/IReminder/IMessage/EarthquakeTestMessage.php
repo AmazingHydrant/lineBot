@@ -18,7 +18,7 @@ class EarthquakeTestMessage implements IMessage
     public function nowPush()
     {
         $earthquakeNo = $this->data['earthquakeNo'];
-        if (in_array($earthquakeNo, $this->getFlag())) {
+        if ($this->isPushed()) {
             return false;
         }
         $this->text = '[' . $this->data['reportType'] . ']' . PHP_EOL;
