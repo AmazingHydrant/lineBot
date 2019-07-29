@@ -2,6 +2,7 @@
 
 use IReminder\StockReminder;
 use IReminder\EarthquakeReminder;
+use IReminder\PchomeReminder;
 
 /**
  * push line message class
@@ -18,6 +19,8 @@ class PushController extends Controller
         $pushTM->PushReminder($stockReminder);
         $weatherReminder = new EarthquakeReminder;
         $pushTM->PushReminder($weatherReminder);
+        $pchomeReminder = new PchomeReminder;
+        $pushTM->PushReminder($pchomeReminder);
     }
     /**
      * use HTTPget Method param "t" to send message 

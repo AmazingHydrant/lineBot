@@ -26,7 +26,7 @@ class PushModel extends LineBotModel
      */
     private function initModel()
     {
-        $this->userM = new UserModel;
+        $this->userM = M('User');
         $this->to = $this->userM->getUserIdList();
         $this->logM = new LogModel;
     }

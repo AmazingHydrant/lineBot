@@ -19,6 +19,24 @@ class UserModel
         }
         $this->usersInfo = json_decode(file_get_contents(USER_DB_PATH), true);
     }
+    public function getAdminIdList()
+    {
+        $userIdList = [];
+        if (count($this->usersInfo) === 0) {
+            echo 'No user info.';
+            return false;
+        } else {
+            foreach ($this->usersInfo as $key => $val) {
+                if (isset($val['del']) and $val['del'] == 1) {
+                    continue;
+                }
+                //讀取第一個當作admin
+                $userIdList[] = $key;
+                break;
+            }
+        }
+        return $userIdList;
+    }
     public function getUserIdList()
     {
         $userIdList = [];

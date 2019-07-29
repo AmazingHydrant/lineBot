@@ -83,7 +83,9 @@ class StockTestMessage implements IMessage
         if (!file_exists($flagPath)) {
             file_put_contents($flagPath, json_encode([], JSON_FORCE_OBJECT));
         }
-        file_put_contents($flagPath, json_encode([$this->data['股票代號股票名稱']], JSON_FORCE_OBJECT));
+        $arr = $this->getFlag();
+        $arr[] = $this->data['股票代號股票名稱'];
+        file_put_contents($flagPath, json_encode($arr, JSON_FORCE_OBJECT));
     }
 
     public function getFlag()
