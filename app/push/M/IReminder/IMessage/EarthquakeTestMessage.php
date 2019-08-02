@@ -23,7 +23,7 @@ class EarthquakeTestMessage implements IMessage
         }
         $this->text = '[' . $this->data['reportType'] . ']' . PHP_EOL;
         $this->text .= $this->data['reportContent'];
-        $this->imageUrl =  $this->data['reportImageURI'];
+        $this->imageUrl =  $this->data['shakemapImageURI'];
         return true;
     }
 
@@ -49,7 +49,9 @@ class EarthquakeTestMessage implements IMessage
         if (!file_exists($flagPath)) {
             file_put_contents($flagPath, json_encode([], JSON_FORCE_OBJECT));
         }
-        file_put_contents($flagPath, json_encode([$this->data['earthquakeNo']], JSON_FORCE_OBJECT));
+        $flagArr = $this->getFlag();
+        $flagArr[] = $this->data['earthquakeNo'];
+        file_put_contents($flagPath, json_encode($flagArr, JSON_FORCE_OBJECT));
     }
 
     public function getFlag()
