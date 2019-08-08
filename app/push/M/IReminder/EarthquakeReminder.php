@@ -22,7 +22,6 @@ class EarthquakeReminder implements IReminder
         foreach ($this->getBasicData()['records']['earthquake']  as $data) {
             if (!$data) {
                 $earthquakeTestMessage =  new EarthquakeTestMessage(null);
-                $earthquakeTestMessage->delFlag();
                 return $iMessageList;
             }
             $iMessageList[] = new EarthquakeTestMessage($data);
