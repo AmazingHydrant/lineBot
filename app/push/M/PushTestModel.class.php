@@ -15,8 +15,10 @@ class PushTestModel
                 $textMessage = new TextMessageBuilder($message->getText());
                 $pushM = new PushModel;
                 $pushM->pushMessage($userList, $textMessage);
-                $imageMessage = new ImageMessageBuilder($message->getImgUrl(), $message->getImgUrl());
-                $pushM->pushMessage($userList, $imageMessage);
+                if ($message->getImgUrl()){
+                    $imageMessage = new ImageMessageBuilder($message->getImgUrl(), $message->getImgUrl());
+                    $pushM->pushMessage($userList, $imageMessage);    
+                }
                 $message->setFlag();
                 p($userList);
                 echo $message->getText();

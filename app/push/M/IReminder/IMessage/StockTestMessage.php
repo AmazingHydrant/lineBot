@@ -41,12 +41,12 @@ class StockTestMessage implements IMessage
             $this->text = "[抽股票扣款通知]" . PHP_EOL . "{$this->data['股票代號股票名稱']}" . PHP_EOL . "今晚預扣款 {$this->data['預扣款日']}" . PHP_EOL;
             $this->text .= "預扣費用 {$this->data['預扣費用']}元";
             return true;
-        } elseif ($this->data['還款日期'] == date('n月j日') and date('H') == '10') {
+        } elseif ($this->data['還款日期'] == date('n月j日') and date('H') == '09') {
             if ($this->isPushed()) {
                 return false;
             }
             $this->text = "[抽股票還款通知]" . PHP_EOL . "{$this->data['股票代號股票名稱']}" . PHP_EOL . "今天還款 {$this->data['還款日期']}" . PHP_EOL;
-            $this->text .= "還款金額 " . (int) str_replace(",", "", $this->data['預扣費用']) - 20 . "元";
+            $this->text .= "還款金額 " . ((int) str_replace(",", "", $this->data['預扣費用']) - 20) . "元";
             return true;
         } else {
             if (date('H') == '12') {
