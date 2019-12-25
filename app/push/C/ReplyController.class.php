@@ -14,7 +14,7 @@ class ReplyController
         $text = $text[0];
         switch ($text) {
             case '1':
-                $replyModel->reply($text);
+                $replyModel->reply($extraTexts);
                 break;
             case '開啟地震':
                 $userId = $replyModel->getUserId();
